@@ -1,15 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { incrementCounter, decrementCounter } from '../redux/actions';
 import CardBody from "./CardBody";
 
-const Counter = ({ count, dispatch }) => {
-    const handleIncrement = () => {
-        dispatch({ type: "INCREMENT" });
-     };
+const Counter = ({ count, increment, decrement }) => {
+    // const handleIncrement = () => {
+    //     dispatch({ type: "INCREMENT" });
+    //  };
 
-    const handleDecrement = () => {
-        dispatch({ type: "DECREMENT" });
-     };
+    // const handleDecrement = () => {
+    //     dispatch({ type: "DECREMENT" });
+    //  };
+    // do not need above functions because of new code in mapDispatchToProps
 
     return (
         <div className="card text-center">
@@ -18,15 +20,22 @@ const Counter = ({ count, dispatch }) => {
             </div>
             <CardBody
             count={count}
-            handleIncrement={handleIncrement}
-            handleDecrement={handleDecrement}
+            handleIncrement={increment}
+            handleDecrement={decrement}
             />
         </div>
     )
 }
 
+const mapDispatchToProps = dispatch => {
+    return{
+        increment: () => dispatch(incrementCounter()),
+        decrement: () => dispatch(decrementCounter()) 
+    };
+};
+
 const mapStateToProps = state => ({
-    count: state.count
+    count: state.counterReducer.count
 });
 
 // const connectCounter = connect(); 
@@ -34,4 +43,4 @@ const mapStateToProps = state => ({
 // export default ReduxCounter;
 // above lines are the same as below single line:
 
-export default connect(mapStateToProps)(Counter);
+export default connect(mapStateToProps, mapDispatchToProps)(Counter);
